@@ -27,7 +27,32 @@
     "title": "Packages",
     "popularLabel": "Popular",
     "payLabel": "Pay now",
-    "items": []
+    "items": [
+      {
+        "title": "New package",
+        "price": 1000,
+        "currency": "INR",
+        "unit": "",
+        "description": "fgy",
+        "features": [],
+        "highlight": true,
+        "image": null,
+        "razorpayLink": "",
+        "stripeLink": ""
+      },
+      {
+        "title": "New package",
+        "price": 1000,
+        "currency": "INR",
+        "unit": "",
+        "description": "",
+        "features": [],
+        "highlight": false,
+        "image": null,
+        "razorpayLink": "",
+        "stripeLink": ""
+      }
+    ]
   },
   "custom": {
     "enabled": true,
