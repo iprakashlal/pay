@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Pay Prakash Lal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" id="fontlink" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap">
+<style>
+/* Layout: a calm checkout counter. One column of trust signals, packages as price cards, a custom-amount desk, and a pay sheet that adapts to the method. Site tokens are rewritten by the theme editor; the control panel keeps its own fixed palette. */
+:root{
+  --bg:#F3F5F9;--surface:#FFFFFF;--text:#0F172A;--soft:#5B6577;--line:#DCE2EC;--accent:#1F5EFF;--ok:#0F9D74;
+  --on-accent:#fff;--r:18px;
+  --fd:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --fb:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --fm:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --gl:max(16px,env(safe-area-inset-left,0px));--gr:max(16px,env(safe-area-inset-right,0px));
+  --a-bg:#0D1117;--a-panel:#151B24;--a-raise:#1C2430;--a-line:#2A3442;--a-text:#E6EAF0;--a-soft:#8B97A8;--a-accent:#5B7CFF;--a-ok:#3FB97A;--a-warn:#F2A541;--a-bad:#F06A6A;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.adm{background:var(--a-bg);color:var(--a-text)}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+h1,h2,h3{font-family:var(--fd);margin:0;line-height:1.1;text-wrap:balance}
+p{margin:0}
+
+/* ===== PAYMENT SITE ===== */
+.wrap{max-width:1080px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+.top{padding-block:20px;border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--fd);font-weight:800;font-size:18px;overflow:hidden;flex:none}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand b{font-family:var(--fd);font-size:19px;font-weight:700;display:block;line-height:1.2}
+.brand small{color:var(--soft);font-size:13px}
+.secure{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,transparent);padding:7px 12px;border-radius:999px}
+.secure svg{width:14px;height:14px}
+.hero{padding-block:56px 32px}
+.eyebrow{font-family:var(--fm);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(34px,5.5vw,58px);font-weight:800;letter-spacing:-.03em;margin-top:12px;max-width:18ch}
+.hero p.lead{color:var(--soft);font-size:18px;max-width:58ch;margin-top:16px}
+.methods{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.methods span{font-size:13px;font-weight:600;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start;padding-bottom:48px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.sec-t{font-size:22px;font-weight:700;margin-bottom:16px}
+.pkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:16px}
+.pkg{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;min-width:0}
+.pkg.hl{border:2px solid var(--accent);box-shadow:0 12px 30px -18px color-mix(in srgb,var(--accent) 60%,transparent)}
+.pkg .rib{position:absolute;top:-11px;left:20px;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+.pkg img.pi{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:calc(var(--r)*.6)}
+.pkg h3{font-size:19px;font-weight:700}
+.price{font-family:var(--fd);font-size:30px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--fb);font-size:13px;font-weight:500;color:var(--soft);margin-left:4px}
+.pkg p{color:var(--soft);font-size:15px}
+.pkg ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.pkg li{display:flex;gap:8px}
+.pkg li::before{content:"";width:16px;height:16px;flex:none;margin-top:4px;border-radius:50%;background:color-mix(in srgb,var(--ok) 16%,transparent) center/10px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 5.2l2.2 2.2L8.5 2.6' fill='none' stroke='%230F9D74' stroke-width='1.6'/%3E%3C/svg%3E")}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 18px;border-radius:calc(var(--r)*.6);border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(.96)}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.pkg .btn{margin-top:auto}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:28px;color:var(--soft);text-align:center}
+.side{display:flex;flex-direction:column;gap:16px;position:sticky;top:16px}
+@media (max-width:900px){.side{position:static}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card h2{font-size:19px;font-weight:700}
+.card p.s{color:var(--soft);font-size:14px}
+.amt{display:flex;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.amt select{border:0;background:transparent;font:inherit;font-weight:700;padding:0 10px;color:var(--text);border-right:1px solid var(--line)}
+.amt input{border:0;background:transparent;font:inherit;font-family:var(--fd);font-size:24px;font-weight:700;padding:10px 12px;width:100%;min-width:0;color:var(--text)}
+.amt:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+.amt input:focus,.amt select:focus{outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:var(--text);font-variant-numeric:tabular-nums}
+.chips button:hover{border-color:var(--accent)}
+.fld{width:100%;border:1px solid var(--line);border-radius:12px;background:var(--bg);font:inherit;padding:10px 12px;color:var(--text)}
+.fld:focus{outline:none;border-color:var(--accent)}
+.err{color:#D03A3A;font-size:13px;min-height:1em}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;font-size:14px;counter-increment:s}
+.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);font-weight:700;display:grid;place-items:center;font-size:13px}
+.steps b{display:block;font-size:15px}
+.steps span{color:var(--soft)}
+.copyrow{display:flex;align-items:center;gap:8px;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:8px 8px 8px 12px;background:var(--bg)}
+.copyrow code{font-family:var(--fm);font-size:13px;word-break:break-all}
+.copyrow button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--text);flex:none}
+.policies{padding-bottom:40px;display:flex;flex-direction:column;gap:10px}
+.policies details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+.policies summary{cursor:pointer;font-weight:700}
+.policies details p{color:var(--soft);font-size:14px;margin-top:10px;white-space:pre-line}
+.foot{border-top:1px solid var(--line);padding-block:20px;color:var(--soft);font-size:13px}
+.foot .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* pay sheet */
+.sheet-bg{position:fixed;inset:0;background:rgba(10,14,22,.55);z-index:100;display:grid;place-items:end center;padding-top:env(safe-area-inset-top,0px)}
+@media (min-width:640px){.sheet-bg{place-items:center}}
+.sheet{background:var(--surface);color:var(--text);width:100%;max-width:480px;max-height:calc(100vh - 24px);overflow:auto;border-radius:22px 22px 0 0;padding:22px;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px));padding-bottom:max(22px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:16px;animation:rise .28s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:640px){.sheet{border-radius:22px}}
+@keyframes rise{from{transform:translateY(30px);opacity:0}}
+.sh-top{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.sh-top .x{border:0;background:var(--bg);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px;color:var(--text);flex:none}
+.sum{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 16px;background:var(--bg);border-radius:14px}
+.sum b{font-family:var(--fd);font-size:26px;font-variant-numeric:tabular-nums}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;color:var(--text)}
+.tabs button.on{background:var(--text);color:var(--surface);border-color:var(--text)}
+.pane{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.qr{align-self:center;background:#fff;padding:12px;border-radius:14px;border:1px solid var(--line);line-height:0}
+.qr img,.qr canvas{width:200px;height:200px;display:block}
+.warn{font-size:13px;color:var(--soft);background:color-mix(in srgb,var(--accent) 7%,transparent);border-radius:12px;padding:10px 12px}
+.warn b{color:var(--text)}
+.after{font-size:13px;color:var(--soft);border-top:1px solid var(--line);padding-top:12px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160px);background:#0F172A;color:#fff;font-weight:600;padding:11px 18px;border-radius:12px;z-index:300;transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px);font-family:"Manrope",sans-serif;font-size:14px}
+.toast.on{transform:translate(-50%,0)}
+.pbar{position:sticky;top:0;z-index:90;background:#0D1117;color:#E6EAF0;padding-block:10px;padding-left:var(--gl);padding-right:var(--gr);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;font-family:"Manrope",sans-serif;font-size:14px}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ===== CONTROL PANEL ===== */
+#admin{font-family:"Manrope",sans-serif;color:var(--a-text);min-height:100vh}
+#admin h1,#admin h2,#admin h3{font-family:"Manrope",sans-serif;letter-spacing:-.01em}
+.gate{min-height:100vh;display:grid;place-items:center;padding-block:40px;padding-left:var(--gl);padding-right:var(--gr);background:radial-gradient(800px 500px at 80% -10%,rgba(91,124,255,.18),transparent 60%),var(--a-bg)}
+.gate-card{width:100%;max-width:460px;background:var(--a-panel);border:1px solid var(--a-line);border-radius:20px;padding:30px;display:flex;flex-direction:column;gap:16px;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.gbrand{display:flex;align-items:center;gap:10px;font-weight:800}
+.gbrand i{width:12px;height:12px;border-radius:4px;background:var(--a-accent);display:block}
+.gate-card h1{font-size:23px;font-weight:800}
+.sub{color:var(--a-soft);font-size:14px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f label,.f .lb{font-size:12px;font-weight:700;color:var(--a-soft);letter-spacing:.04em;text-transform:uppercase}
+.hint{font-size:12px;color:var(--a-soft)}
+.in,.ta,.sel{width:100%;background:var(--a-bg);border:1px solid var(--a-line);color:var(--a-text);border-radius:10px;padding:11px 12px;font:inherit;font-size:15px}
+.ta{min-height:90px;resize:vertical;line-height:1.5}
+.in:focus,.ta:focus,.sel:focus{outline:none;border-color:var(--a-accent);box-shadow:0 0 0 3px rgba(91,124,255,.2)}
+.abtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:10px;border:1px solid var(--a-line);background:var(--a-raise);color:var(--a-text);font:inherit;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.abtn:hover{border-color:var(--a-soft)}
+.abtn.pri{background:var(--a-accent);border-color:var(--a-accent);color:#fff}
+.abtn.ghost{background:transparent}
+.abtn.danger{color:var(--a-bad);border-color:rgba(240,106,106,.4);background:transparent}
+.abtn.sm{padding:6px 10px;font-size:12px;border-radius:8px}
+.abtn:disabled{opacity:.5;cursor:not-allowed}
+.aerr{color:var(--a-bad);font-size:14px;min-height:1.2em}
+.meter{height:6px;border-radius:99px;background:var(--a-line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;transition:width .2s,background .2s}
+.note{font-size:13px;color:var(--a-soft);background:var(--a-raise);border:1px solid var(--a-line);border-radius:12px;padding:12px 14px}
+.note b{color:var(--a-text)}
+.note.warn2{border-color:rgba(242,165,65,.45)}
+.shell{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
+.sidebar{background:var(--a-panel);border-right:1px solid var(--a-line);padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:4px;padding-left:max(14px,env(safe-area-inset-left,0px))}
+.sidebar .gbrand{padding:6px 10px 18px;font-size:15px}
+.grp{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--a-soft);padding:14px 10px 6px}
+.nav-b{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:var(--a-soft);font:inherit;font-weight:600;font-size:14px;padding:9px 10px;border-radius:9px;cursor:pointer}
+.nav-b:hover{background:var(--a-raise);color:var(--a-text)}
+.nav-b.on{background:rgba(91,124,255,.14);color:var(--a-text)}
+.nav-b .ico{width:18px;text-align:center;color:var(--a-accent)}
+.mainp{min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(13,17,23,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--a-line);padding-block:12px;padding-left:24px;padding-right:max(24px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+.topbar h2{font-size:20px;font-weight:800}
+.st{font-size:13px;color:var(--a-soft);display:flex;align-items:center;gap:8px}
+.st i{width:8px;height:8px;border-radius:50%;background:var(--a-ok);display:block}
+.st.dirty i{background:var(--a-warn)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.content{padding-block:24px 80px;padding-left:24px;padding-right:max(24px,env(safe-area-inset-right,0px));max-width:900px;width:100%;display:flex;flex-direction:column;gap:18px}
+.content > p.desc{color:var(--a-soft);font-size:14px;max-width:70ch}
+.card-a{background:var(--a-panel);border:1px solid var(--a-line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.card-a > h3{font-size:15px;font-weight:800}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:700px){.g2,.g3{grid-template-columns:1fr}}
+.colorf{display:flex;gap:8px;align-items:center}
+.colorf input[type=color]{width:44px;height:42px;padding:0;border:1px solid var(--a-line);border-radius:10px;background:var(--a-bg);cursor:pointer;flex:none}
+.colorf .in{font-family:"JetBrains Mono",monospace;font-size:13px}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid var(--a-line);border-radius:10px;background:var(--a-bg);cursor:pointer}
+.tog span{font-size:14px;font-weight:600}
+.tog input{appearance:none;width:40px;height:22px;border-radius:99px;background:var(--a-line);position:relative;cursor:pointer;flex:none;margin:0}
+.tog input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+.tog input:checked{background:var(--a-accent)}
+.tog input:checked::after{transform:translateX(18px)}
+.rangef{display:flex;gap:12px;align-items:center}
+.rangef input{flex:1;accent-color:var(--a-accent)}
+.rangef output{font-family:"JetBrains Mono",monospace;font-size:13px;min-width:44px;text-align:right}
+.list{display:flex;flex-direction:column;gap:10px}
+.li{border:1px solid var(--a-line);border-radius:12px;background:var(--a-bg);overflow:hidden}
+.li-h{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.li-h .ttl{flex:1;min-width:0;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;background:none;border:0;color:inherit;text-align:left;font-family:inherit;padding:4px 0}
+.chev{transition:transform .2s;color:var(--a-soft)}
+.li.open .chev{transform:rotate(90deg)}
+.li-b{padding:14px;display:none;flex-direction:column;gap:14px;border-top:1px solid var(--a-line)}
+.li.open .li-b{display:flex}
+.ib{width:30px;height:30px;border-radius:8px;border:1px solid var(--a-line);background:var(--a-raise);color:var(--a-soft);cursor:pointer;display:grid;place-items:center;font-size:14px;padding:0;flex:none}
+.ib:hover{color:var(--a-text)}
+.ib.del:hover{color:var(--a-bad)}
+.ib:disabled{opacity:.35;cursor:not-allowed}
+.strs{display:flex;flex-direction:column;gap:8px}
+.strs .r{display:flex;gap:8px;align-items:center}
+.imgf{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.thumb{width:84px;height:84px;border-radius:12px;border:1px dashed var(--a-line);background:var(--a-bg);display:grid;place-items:center;color:var(--a-soft);font-size:11px;flex:none;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.presets{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.preset{border:1px solid var(--a-line);border-radius:12px;padding:10px;background:var(--a-bg);cursor:pointer;text-align:left;color:var(--a-text);font:inherit;font-weight:700;font-size:13px;display:flex;flex-direction:column;gap:8px}
+.preset:hover{border-color:var(--a-accent)}
+.preset .bar{display:flex;height:28px;border-radius:8px;overflow:hidden}
+.preset .bar i{flex:1}
+.fieldwarn{font-size:12px;color:var(--a-warn)}
+.modal{position:fixed;inset:0;background:rgba(5,8,12,.7);z-index:150;display:grid;place-items:center;padding-left:var(--gl);padding-right:var(--gr)}
+.modal .box{background:var(--a-panel);border:1px solid var(--a-line);border-radius:16px;padding:24px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:14px;color:var(--a-text);font-family:"Manrope",sans-serif}
+.modal .row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:sticky;top:0;height:auto;z-index:30;flex-direction:row;overflow-x:auto;padding:10px;gap:6px;border-right:0;border-bottom:1px solid var(--a-line)}
+  .sidebar .gbrand,.grp{display:none}
+  .nav-b{width:auto;white-space:nowrap;flex:none}
+  .topbar{position:static;padding-left:16px}
+  .content{padding-left:16px;padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+</style>
+</head>
+<body>
+<div id="site"></div>
+<div id="admin" hidden></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(()=>{
+"use strict";
+/* tidy the address: /index.html → / */
+if(/\/index\.html$/i.test(location.pathname)){history.replaceState(null,"",location.pathname.replace(/index\.html$/i,"")+location.hash)}
+
+/* ============================================================
+   DEFAULT CONTENT (no payment details until you add them)
+   ============================================================ */
+const DEFAULT={
+  theme:{bg:"#F3F5F9",surface:"#FFFFFF",text:"#0F172A",soft:"#5B6577",line:"#DCE2EC",accent:"#1F5EFF",ok:"#0F9D74",fontDisplay:"Bricolage Grotesque",fontBody:"Instrument Sans",radius:18},
+  brand:{name:"Prakash Lal",tagline:"Payments",logo:null,secureLabel:"Secure payment",pageTitle:"Pay Prakash Lal"},
+  hero:{eyebrow:"Payments",title:"Pay for a service or send any amount",lead:"Choose a package or enter an amount, then pay with UPI, card or PayPal. You'll see who you're paying before you confirm."},
+  packages:{title:"Packages",popularLabel:"Popular",payLabel:"Pay now",items:[]},
+  custom:{enabled:true,title:"Pay a custom amount",text:"For invoices, deposits or anything else agreed with me.",currency:"INR",min:1,suggestions:[500,1000,2500,5000],notePlaceholder:"What is this payment for? (e.g. invoice number)",buttonLabel:"Continue"},
+  methods:{
+    upi:{enabled:false,label:"UPI",vpa:"",payeeName:"Prakash Lal"},
+    razorpay:{enabled:false,label:"Card, UPI or netbanking (Razorpay)",customLink:""},
+    stripe:{enabled:false,label:"International card (Stripe)",customLink:""},
+    paypal:{enabled:false,label:"PayPal",username:""}
+  },
+  steps:{title:"How it works",items:[{title:"Choose",text:"Pick a package or enter an amount."},{title:"Pay",text:"Use UPI, a card or PayPal. Check the payee name before you confirm."},{title:"Share the reference",text:"Send me the payment reference so I can match it to your order."}]},
+  after:{title:"After you pay",text:"Send the transaction reference or a screenshot so I can confirm your payment.",email:"",whatsapp:""},
+  policies:{items:[{title:"Refund policy",text:"Refunds are handled case by case. Contact me within 7 days of payment."},{title:"Terms",text:"Payments are for services agreed in advance. Prices include applicable taxes unless stated."}]},
+  footer:{text:"Payments are processed by UPI apps, Razorpay, Stripe or PayPal. This page never sees your card or bank details."}
+};
+const CURRENCIES=["INR","USD","EUR","GBP","AED","SGD","AUD","CAD"];
+const FONTS_D={"Bricolage Grotesque":"Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800","Sora":"Sora:wght@500;700;800","Fraunces":"Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800","Syne":"Syne:wght@500;700;800","DM Serif Display":"DM+Serif+Display","Unbounded":"Unbounded:wght@500;700;800"};
+const FONTS_B={"Instrument Sans":"Instrument+Sans:wght@400;500;600;700","Manrope":"Manrope:wght@400;500;600;700","IBM Plex Sans":"IBM+Plex+Sans:wght@400;500;600;700","DM Sans":"DM+Sans:wght@400;500;700","Work Sans":"Work+Sans:wght@400;500;600;700"};
+const PRESETS=[
+  {name:"Clear blue",t:{bg:"#F3F5F9",surface:"#FFFFFF",text:"#0F172A",soft:"#5B6577",line:"#DCE2EC",accent:"#1F5EFF",ok:"#0F9D74"}},
+  {name:"Night",t:{bg:"#0E1320",surface:"#161D2E",text:"#EEF2F8",soft:"#9AA6BC",line:"#2A344B",accent:"#6C8CFF",ok:"#3CC79A"}},
+  {name:"Emerald",t:{bg:"#F2F7F4",surface:"#FFFFFF",text:"#10261C",soft:"#5A6E64",line:"#D5E3DA",accent:"#0F7A55",ok:"#0F7A55"}},
+  {name:"Saffron",t:{bg:"#FBF6EE",surface:"#FFFFFF",text:"#2A1E10",soft:"#7A6A55",line:"#ECDFCB",accent:"#E07A10",ok:"#2E8B57"}},
+  {name:"Graphite",t:{bg:"#F4F4F5",surface:"#FFFFFF",text:"#18181B",soft:"#61616B",line:"#E1E1E5",accent:"#18181B",ok:"#16855E"}}
+];
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+const $=(s,c=document)=>c.querySelector(s),$$=(s,c=document)=>[...c.querySelectorAll(s)];
+const clone=o=>JSON.parse(JSON.stringify(o));
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function getP(o,p){return p.split(".").reduce((a,k)=>a==null?a:a[k],o)}
+function setP(o,p,v){const ks=p.split(".");let a=o;for(let i=0;i<ks.length-1;i++)a=a[ks[i]];a[ks[ks.length-1]]=v}
+function merge(def,val){if(Array.isArray(def))return Array.isArray(val)?val:def;
+  if(def&&typeof def==="object"){const out={},v=(val&&typeof val==="object"&&!Array.isArray(val))?val:{};for(const k of Object.keys(def))out[k]=merge(def[k],v[k]);for(const k of Object.keys(v))if(!(k in out))out[k]=v[k];return out}
+  return val===undefined?def:val}
+function hexRgb(h){h=String(h||"#000").replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16)||0;return[(n>>16)&255,(n>>8)&255,n&255]}
+function lum(h){const[r,g,b]=hexRgb(h).map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*r+.7152*g+.0722*b}
+const onColor=h=>lum(h)>.45?"#0F172A":"#FFFFFF";
+const localPreview={};
+function imgUrl(img){if(!img)return "";if(img.path)return localPreview[img.path]||img.path;return ""}
+let toastT;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("on"),2400)}
+function money(v,cur){try{return new Intl.NumberFormat(cur==="INR"?"en-IN":"en-US",{style:"currency",currency:cur,maximumFractionDigits:Number(v)%1?2:0}).format(Number(v)||0)}catch(e){return cur+" "+v}}
+const httpsOnly=u=>{u=String(u||"").trim();return /^https:\/\/[^\s]+$/i.test(u)?u:""};
+const cleanVpa=v=>String(v||"").trim();
+const vpaOk=v=>/^[A-Za-z0-9.\-_]{2,256}@[A-Za-z][A-Za-z0-9.\-]{1,63}$/.test(cleanVpa(v));
+const ppOk=u=>/^[A-Za-z0-9]{1,40}$/.test(String(u||"").trim());
+function upiLink(c,amount,note){const m=c.methods.upi;const vpa=cleanVpa(m.vpa);if(!vpaOk(vpa))return "";
+  let u=`upi://pay?pa=${vpa}&pn=${encodeURIComponent(m.payeeName||c.brand.name)}`;
+  if(amount)u+=`&am=${Number(amount).toFixed(2)}`;u+="&cu=INR";if(note)u+=`&tn=${encodeURIComponent(String(note).slice(0,60))}`;return u}
+function paypalLink(c,amount,cur){const u=String(c.methods.paypal.username||"").trim();return `https://www.paypal.me/${encodeURIComponent(u)}/${Number(amount)||""}${cur||""}`}
+const LINK_HOSTS={razorpay:/(^|\.)razorpay\.com$|(^|\.)rzp\.io$/i,stripe:/(^|\.)stripe\.com$/i};
+function hostOk(kind,u){try{return LINK_HOSTS[kind].test(new URL(u).hostname)}catch(e){return false}}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let saved=clone(DEFAULT),draft=null,dirty=false,preview=false;
+let cfg=null,token=null,adminUser=null,authed=false,contentSha=null,remoteLoaded=false,saving=false,currentCat="theme",idleTimer=null;
+const site=$("#site"),admin=$("#admin");
+
+/* ============================================================
+   THEME
+   ============================================================ */
+function applyTheme(t){const r=document.documentElement.style;
+  ["bg","surface","text","soft","line","accent","ok"].forEach(k=>r.setProperty("--"+k,t[k]));
+  r.setProperty("--on-accent",onColor(t.accent));r.setProperty("--r",(+t.radius||0)+"px");
+  r.setProperty("--fd",`"${t.fontDisplay}","Helvetica Neue",Arial,sans-serif`);r.setProperty("--fb",`"${t.fontBody}","Helvetica Neue",Arial,sans-serif`);
+  const href="https://fonts.googleapis.com/css2?"+[FONTS_D[t.fontDisplay],FONTS_B[t.fontBody]].filter(Boolean).map(f=>"family="+f).join("&")+"&display=swap";
+  const l=$("#fontlink");if(l.getAttribute("href")!==href)l.setAttribute("href",href)}
+
+/* ============================================================
+   PAYMENT SITE
+   ============================================================ */
+function activeMethods(c,cur,pkg){const M=c.methods,out=[];
+  if(M.upi.enabled&&vpaOk(M.upi.vpa)&&cur==="INR")out.push("upi");
+  const rz=pkg?httpsOnly(pkg.razorpayLink):httpsOnly(M.razorpay.customLink);if(M.razorpay.enabled&&rz)out.push("razorpay");
+  const sp=pkg?httpsOnly(pkg.stripeLink):httpsOnly(M.stripe.customLink);if(M.stripe.enabled&&sp)out.push("stripe");
+  if(M.paypal.enabled&&ppOk(M.paypal.username))out.push("paypal");
+  return out}
+function methodChips(c){const M=c.methods,l=[];if(M.upi.enabled&&vpaOk(M.upi.vpa))l.push(M.upi.label);if(M.razorpay.enabled)l.push(M.razorpay.label);if(M.stripe.enabled)l.push(M.stripe.label);if(M.paypal.enabled&&ppOk(M.paypal.username))l.push(M.paypal.label);return l}
+function siteHTML(c){
+  const B=c.brand,H=c.hero,P=c.packages,C=c.custom,S=c.steps,A=c.after;
+  const initials=B.name.split(/\s+/).map(w=>w[0]||"").join("").slice(0,2).toUpperCase();
+  const chips=methodChips(c);
+  const pk=P.items.length?`<div class="pkgs">${P.items.map((p,i)=>`<article class="pkg${p.highlight?" hl":""}">${p.highlight?`<span class="rib">${esc(P.popularLabel)}</span>`:""}
+      ${p.image?`<img class="pi" src="${esc(imgUrl(p.image))}" alt="">`:""}<h3>${esc(p.title)}</h3>
+      <div class="price">${esc(money(p.price,p.currency))}${p.unit?`<small>${esc(p.unit)}</small>`:""}</div>
+      ${p.description?`<p>${esc(p.description)}</p>`:""}
+      ${p.features&&p.features.length?`<ul>${p.features.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>`:""}
+      <button class="btn pri" type="button" data-pkg="${i}">${esc(P.payLabel)}</button></article>`).join("")}</div>`
+    :`<div class="empty">Packages will appear here. ${C.enabled?"You can still pay a custom amount.":""}</div>`;
+  const custom=C.enabled?`<section class="card" aria-labelledby="ct"><h2 id="ct">${esc(C.title)}</h2>${C.text?`<p class="s">${esc(C.text)}</p>`:""}
+      <div class="amt"><select id="cur" aria-label="Currency">${CURRENCIES.map(x=>`<option${x===C.currency?" selected":""}>${x}</option>`).join("")}</select><input id="amount" inputmode="decimal" placeholder="0" aria-label="Amount" autocomplete="off"></div>
+      ${C.suggestions.length?`<div class="chips">${C.suggestions.map(v=>`<button type="button" data-amt="${+v}">${esc(money(v,C.currency))}</button>`).join("")}</div>`:""}
+      <input class="fld" id="note" maxlength="60" placeholder="${esc(C.notePlaceholder)}" aria-label="Payment note">
+      <p class="err" id="cerr"></p><button class="btn pri" id="customGo" type="button">${esc(C.buttonLabel)}</button></section>`:"";
+  const contact=(A.email||A.whatsapp)?`${A.email?`<div class="copyrow"><code>${esc(A.email)}</code><button type="button" data-copy="${esc(A.email)}">Copy</button></div>`:""}${A.whatsapp?`<div class="copyrow"><code>WhatsApp ${esc(A.whatsapp)}</code><button type="button" data-copy="${esc(A.whatsapp)}">Copy</button></div>`:""}`:"";
+  return `<header class="top"><div class="wrap"><div class="brand"><span class="logo">${B.logo?`<img src="${esc(imgUrl(B.logo))}" alt="">`:esc(initials)}</span><span><b>${esc(B.name)}</b><small>${esc(B.tagline)}</small></span></div>
+      <span class="secure"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1l5 2v4c0 3-2.2 5.2-5 6-2.8-.8-5-3-5-6V3z" fill="currentColor" opacity=".25"/><path d="M4.5 7.2l1.7 1.7 3.4-3.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>${esc(B.secureLabel)}</span></div></header>
+    <main><section class="hero"><div class="wrap"><p class="eyebrow">${esc(H.eyebrow)}</p><h1>${esc(H.title)}</h1><p class="lead">${esc(H.lead)}</p>
+      ${chips.length?`<div class="methods">${chips.map(x=>`<span>${esc(x)}</span>`).join("")}</div>`:`<div class="methods"><span>Payment options are being set up</span></div>`}</div></section>
+    <div class="wrap grid"><section aria-labelledby="pt"><h2 class="sec-t" id="pt">${esc(P.title)}</h2>${pk}</section>
+      <aside class="side">${custom}
+        <section class="card"><h2>${esc(S.title)}</h2><ol class="steps">${S.items.map(s=>`<li><div><b>${esc(s.title)}</b><span>${esc(s.text)}</span></div></li>`).join("")}</ol></section>
+        <section class="card"><h2>${esc(A.title)}</h2><p class="s">${esc(A.text)}</p>${contact}</section></aside></div>
+    ${c.policies.items.length?`<div class="wrap policies">${c.policies.items.map(p=>`<details><summary>${esc(p.title)}</summary><p>${esc(p.text)}</p></details>`).join("")}</div>`:""}</main>
+    <footer class="foot"><div class="wrap"><span>${esc(c.footer.text)}</span><span>© ${new Date().getFullYear()} ${esc(B.name)}</span></div></footer>`;
+}
+function renderSite(c){
+  applyTheme(c.theme);document.title=c.brand.pageTitle||("Pay "+c.brand.name);
+  const bar=preview?`<div class="pbar"><span><b>Preview</b> · unsaved changes are shown</span><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="abtn sm" id="pvBack" type="button">Back to editor</button><button class="abtn sm pri" id="pvSave" type="button">Save &amp; publish</button></span></div>`:"";
+  site.innerHTML=bar+siteHTML(c);
+  if(preview){$("#pvBack").onclick=()=>{preview=false;route()};$("#pvSave").onclick=async()=>{await save();preview=false;route()}}
+  $$("[data-pkg]",site).forEach(b=>b.onclick=()=>{const p=c.packages.items[+b.dataset.pkg];openSheet(c,{title:p.title,amount:+p.price,currency:p.currency,pkg:p,note:p.title})});
+  $$("[data-amt]",site).forEach(b=>b.onclick=()=>{$("#amount").value=b.dataset.amt;$("#cerr").textContent=""});
+  $$("[data-copy]",site).forEach(b=>b.onclick=()=>copyText(b.dataset.copy,"Copied"));
+  const go=$("#customGo");if(go)go.onclick=()=>{const v=parseFloat(String($("#amount").value).replace(/,/g,"")),cur=$("#cur").value,er=$("#cerr");
+    if(!(v>0)){er.textContent="Enter an amount above zero.";return}
+    if(v<(+c.custom.min||0)){er.textContent=`The minimum is ${money(c.custom.min,cur)}.`;return}
+    if(v>1000000){er.textContent="That amount is too large to pay here. Contact me instead.";return}
+    er.textContent="";openSheet(c,{title:c.custom.title,amount:Math.round(v*100)/100,currency:cur,pkg:null,note:$("#note").value.trim()})};
+}
+function copyText(t,msg){const ok=()=>toast(msg);try{navigator.clipboard.writeText(t).then(ok,()=>toast("Couldn't copy. Select the text instead."))}catch(e){toast("Couldn't copy. Select the text instead.")}}
+function openSheet(c,o){
+  const ms=activeMethods(c,o.currency,o.pkg);const M=c.methods;
+  const bg=document.createElement("div");bg.className="sheet-bg";
+  const names={upi:M.upi.label,razorpay:"Razorpay",stripe:"Stripe",paypal:M.paypal.label};
+  bg.innerHTML=`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="sh-top"><div><p class="eyebrow">Pay ${esc(M.upi.payeeName||c.brand.name)}</p><h3 id="shT" style="font-size:20px;margin-top:4px">${esc(o.title)}</h3></div><button class="x" type="button" aria-label="Close">×</button></div>
+    <div class="sum"><span style="color:var(--soft);font-size:14px">${o.note&&o.note!==o.title?esc(o.note):"Amount"}</span><b>${esc(money(o.amount,o.currency))}</b></div>
+    ${ms.length?`<div class="tabs" role="tablist">${ms.map((m,i)=>`<button type="button" role="tab" data-m="${m}" class="${i?"":"on"}">${esc(names[m])}</button>`).join("")}</div><div class="pane" id="pane"></div>`
+      :`<div class="warn">No payment method is available for ${esc(o.currency)} yet. ${o.currency!=="INR"&&M.upi.enabled?"UPI only accepts INR. ":""}Please contact me to pay.</div>`}
+    <p class="after">${esc(c.after.text)}${c.after.email?` · ${esc(c.after.email)}`:""}${c.after.whatsapp?` · WhatsApp ${esc(c.after.whatsapp)}`:""}</p></div>`;
+  document.body.appendChild(bg);const close=()=>{bg.remove();document.removeEventListener("keydown",esc_)};const esc_=e=>{if(e.key==="Escape")close()};
+  document.addEventListener("keydown",esc_);bg.onclick=e=>{if(e.target===bg)close()};$(".x",bg).onclick=close;$(".x",bg).focus();
+  const show=m=>{$$(".tabs button",bg).forEach(b=>b.classList.toggle("on",b.dataset.m===m));const pane=$("#pane",bg);
+    if(m==="upi"){const link=upiLink(c,o.amount,o.note);
+      pane.innerHTML=`<div class="qr" id="qr" aria-label="UPI QR code for ${esc(money(o.amount,"INR"))}"></div>
+        <p style="text-align:center;font-size:14px;color:var(--soft)">Scan with any UPI app, or pay to this UPI ID:</p>
+        <div class="copyrow"><code>${esc(M.upi.vpa)}</code><button type="button" id="cpv">Copy</button></div>
+        <a class="btn pri" href="${esc(link)}">Open in UPI app</a>
+        <div class="warn">Your UPI app will show the payee name. <b>Check it says ${esc(M.upi.payeeName)}</b> and the amount is ${esc(money(o.amount,"INR"))} before you confirm.</div>`;
+      $("#cpv",bg).onclick=()=>copyText(M.upi.vpa,"UPI ID copied");
+      try{new window.QRCode($("#qr",bg),{text:link,width:200,height:200,colorDark:"#0F172A",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M})}catch(e){$("#qr",bg).outerHTML=`<p class="warn">The QR code couldn't load. Use the UPI ID instead.</p>`}}
+    else if(m==="razorpay"||m==="stripe"){const url=o.pkg?httpsOnly(m==="razorpay"?o.pkg.razorpayLink:o.pkg.stripeLink):httpsOnly(m==="razorpay"?M.razorpay.customLink:M.stripe.customLink);const nm=m==="razorpay"?"Razorpay":"Stripe";
+      pane.innerHTML=`<p style="font-size:14px;color:var(--soft)">You'll pay on ${nm}'s secure checkout page${m==="razorpay"?" (card, UPI, netbanking or wallet)":" (card, Apple Pay or Google Pay)"}.</p>
+        ${o.pkg?"":`<div class="warn">Enter <b>${esc(money(o.amount,o.currency))}</b> on the next page${o.note?` and add the note “${esc(o.note)}”`:""}.</div>`}
+        <a class="btn pri" href="${esc(url)}" target="_blank" rel="noopener">Continue to ${nm} ↗</a>
+        <div class="warn">Make sure the address starts with <b>${m==="razorpay"?"razorpay.com or rzp.io":"buy.stripe.com"}</b>.</div>`}
+    else if(m==="paypal"){const cur=o.currency;
+      pane.innerHTML=`<p style="font-size:14px;color:var(--soft)">You'll pay on PayPal's site, with the amount filled in.</p>
+        <a class="btn pri" href="${esc(paypalLink(c,o.amount,cur))}" target="_blank" rel="noopener">Pay ${esc(money(o.amount,cur))} with PayPal ↗</a>
+        <div class="warn">PayPal will show the recipient. <b>Check it's ${esc(M.upi.payeeName||c.brand.name)}</b> before you send.</div>`}};
+  $$(".tabs button",bg).forEach(b=>b.onclick=()=>show(b.dataset.m));if(ms.length)show(ms[0]);
+}
+
+/* ============================================================
+   GITHUB + DEVICE-ONLY LOGIN
+   The token never goes into the repository. It is stored only
+   in this browser, encrypted with your panel password.
+   ============================================================ */
+const enc=s=>new TextEncoder().encode(s);
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+const unhex=h=>new Uint8Array((h.match(/../g)||[]).map(x=>parseInt(x,16)));
+const ITER=310000,STORE="paypanel.v1",SESS="paypanel.session";
+async function keyFrom(pw,salt,iter){const base=await crypto.subtle.importKey("raw",enc(pw),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt:unhex(salt),iterations:iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function seal(c,username,password,tok){const salt=hex(crypto.getRandomValues(new Uint8Array(16))),iv=crypto.getRandomValues(new Uint8Array(12));
+  const k=await keyFrom(password,salt,ITER);const data=await crypto.subtle.encrypt({name:"AES-GCM",iv},k,enc(JSON.stringify({username,token:tok})));
+  return {v:1,owner:c.owner,repo:c.repo,branch:c.branch,salt,iter:ITER,iv:hex(iv),data:hex(data)}}
+async function unseal(a,password){const k=await keyFrom(password,a.salt,a.iter||ITER);return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:unhex(a.iv)},k,unhex(a.data))))}
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const ss={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};
+function b64FromBytes(u8){let s="";for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)}
+const b64Text=t=>b64FromBytes(enc(t));
+const textB64=b=>new TextDecoder().decode(Uint8Array.from(atob(String(b).replace(/\s/g,"")),c=>c.charCodeAt(0)));
+async function api(c,tok,path,opts={}){const r=await fetch(`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}${path}`,{...opts,cache:"no-store",
+    headers:{"Accept":"application/vnd.github+json","Authorization":"Bearer "+tok,"X-GitHub-Api-Version":"2022-11-28",...(opts.body?{"Content-Type":"application/json"}:{})}});
+  if(!r.ok){let m=r.statusText;try{m=(await r.json()).message||m}catch(e){}const e=new Error(m);e.status=r.status;throw e}return r.status===204?null:r.json()}
+async function getFile(c,tok,p){try{const j=await api(c,tok,`/contents/${p}?ref=${encodeURIComponent(c.branch)}`);return{sha:j.sha,content:j.content}}catch(e){if(e.status===404)return null;throw e}}
+async function putFile(c,tok,p,b64,msg,sha){const body={message:msg,content:b64,branch:c.branch};if(sha)body.sha=sha;return (await api(c,tok,`/contents/${p}`,{method:"PUT",body:JSON.stringify(body)})).content.sha}
+function ghErr(e){if(!e)return "unknown error";if(e.status===401)return "GitHub rejected the token. It may have expired; add a new one under Account & security.";
+  if(e.status===403)return "The token can't write to this repository. Give it Contents: Read and write.";if(e.status===404)return "Repository or branch not found. Check the details and the token's repository access.";
+  if(e.status===409||e.status===422)return "The file changed on GitHub since it was loaded. Press Save again.";if(e instanceof TypeError)return "Couldn't reach GitHub. Check your connection.";return e.message||"unknown error"}
+function detectRepo(){const m=location.hostname.match(/^([^.]+)\.github\.io$/i);if(!m)return{owner:"",repo:"",branch:"main"};const seg=location.pathname.split("/").filter(Boolean)[0];return{owner:m[1],repo:seg&&!/\.html?$/i.test(seg)?seg:m[1]+".github.io",branch:"main"}}
+function pwScore(p){let s=0;if(p.length>=12)s++;if(p.length>=16)s++;if(/[a-z]/.test(p)&&/[A-Z]/.test(p))s++;if(/\d/.test(p))s++;if(/[^A-Za-z0-9]/.test(p)||/\s/.test(p))s++;if(/^(.)\1+$/.test(p)||/password|qwerty|123456/i.test(p))s=0;return Math.min(s,4)}
+function meter(input,bar,label){const upd=()=>{const s=pwScore(input.value);const w=[8,30,55,80,100][s],c=["#F06A6A","#F06A6A","#F2A541","#3FB97A","#3FB97A"][s];bar.style.width=w+"%";bar.style.background=c;label.textContent=["Too weak","Weak","Fair","Strong","Very strong"][s]};input.addEventListener("input",upd);upd()}
+function startSession(){ss.set(SESS,JSON.stringify({token,username:adminUser,at:Date.now()}));armIdle()}
+function restoreSession(){try{const s=JSON.parse(ss.get(SESS)||"null");if(s&&s.token&&cfg&&Date.now()-s.at<30*60e3){token=s.token;adminUser=s.username;authed=true;armIdle()}else ss.del(SESS)}catch(e){}}
+const IDLE=30*60e3;
+function armIdle(){clearTimeout(idleTimer);idleTimer=setTimeout(()=>{if(authed){signOut();toast("Signed out after 30 minutes without activity")}},IDLE);const s=ss.get(SESS);if(s){try{const o=JSON.parse(s);o.at=Date.now();ss.set(SESS,JSON.stringify(o))}catch(e){}}}
+["pointerdown","keydown"].forEach(ev=>addEventListener(ev,()=>{if(authed)armIdle()},{passive:true}));
+function signOut(){authed=false;token=null;adminUser=null;remoteLoaded=false;draft=null;dirty=false;ss.del(SESS);clearTimeout(idleTimer);if(location.hash==="#admin")renderAdmin()}
+async function loadRemote(){const f=await getFile(cfg,token,"content.json");contentSha=f?f.sha:null;if(f){try{saved=merge(DEFAULT,JSON.parse(textB64(f.content)))}catch(e){}}if(!dirty)draft=clone(saved);remoteLoaded=true}
+
+/* ============================================================
+   ROUTING
+   ============================================================ */
+function route(){const adm=location.hash==="#admin";
+  if(adm&&!preview){document.body.classList.add("adm");site.hidden=true;admin.hidden=false;renderAdmin()}
+  else{document.body.classList.remove("adm");admin.hidden=true;site.hidden=false;renderSite(preview?draft:saved)}}
+addEventListener("hashchange",()=>{if(location.hash!=="#admin")preview=false;route();scrollTo(0,0)});
+
+/* ============================================================
+   ADMIN: gates
+   ============================================================ */
+const GB=`<div class="gbrand"><i></i><span>Payment page control panel</span></div>`;
+function gate(inner){admin.innerHTML=`<div class="gate"><div class="gate-card">${GB}${inner}<a href="#" class="abtn ghost" style="align-self:flex-start">← Back to payment page</a></div></div>`}
+function renderAdmin(){
+  if(!cfg){renderSetup();return}
+  if(!authed){renderLogin();return}
+  if(!remoteLoaded){gate(`<h1>Loading…</h1><p class="sub">Fetching the latest settings from GitHub.</p>`);
+    loadRemote().then(renderAdmin).catch(e=>{gate(`<h1>Couldn't load settings</h1><p class="sub">${esc(ghErr(e))}</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="abtn pri" id="rt" type="button">Try again</button><button class="abtn" id="so" type="button">Sign out</button></div>`);$("#rt").onclick=renderAdmin;$("#so").onclick=signOut});return}
+  if(!draft)draft=clone(saved);renderPanel()}
+function renderSetup(){const d=detectRepo();
+  gate(`<h1>Set up this device</h1><p class="sub">Connect the payment page's GitHub repository and choose a login. Your token is encrypted and kept only in this browser; nothing about your login is stored in the repository.</p>
+    <form id="sf" class="list" autocomplete="off">
+    <div class="g2"><div class="f"><label for="so_o">GitHub username</label><input class="in" id="so_o" required></div><div class="f"><label for="so_r">Repository</label><input class="in" id="so_r" required></div></div>
+    <div class="f"><label for="so_b">Branch</label><input class="in" id="so_b" required></div>
+    <div class="f"><label for="so_t">GitHub access token</label><input class="in" id="so_t" type="password" required autocomplete="off" spellcheck="false"><span class="hint">A fine-grained token with access to this repository only, Contents: Read and write. Use a different token from your portfolio.</span></div>
+    <div class="f"><label for="su">Panel username</label><input class="in" id="su" required minlength="3" autocomplete="username"></div>
+    <div class="f"><label for="sp">Panel password</label><input class="in" id="sp" type="password" required autocomplete="new-password"><div class="meter"><i id="mb"></i></div><span class="hint" id="ml"></span></div>
+    <div class="f"><label for="sp2">Confirm password</label><input class="in" id="sp2" type="password" required autocomplete="new-password"></div>
+    <p class="aerr" id="serr"></p><button class="abtn pri" type="submit">Connect this device</button></form>
+    <div class="note">Setting up a second phone or laptop? Do the same steps there. Each device keeps its own encrypted copy.</div>`);
+  $("#so_o").value=d.owner;$("#so_r").value=d.repo;$("#so_b").value=d.branch;meter($("#sp"),$("#mb"),$("#ml"));
+  $("#sf").onsubmit=async e=>{e.preventDefault();const er=$("#serr");er.textContent="";
+    const c={owner:$("#so_o").value.trim(),repo:$("#so_r").value.trim(),branch:$("#so_b").value.trim()||"main"},tok=$("#so_t").value.trim(),u=$("#su").value.trim(),p=$("#sp").value;
+    if(u.length<3){er.textContent="Username needs at least 3 characters.";return}
+    if(p.length<12||pwScore(p)<3){er.textContent="Choose a stronger password: at least 12 characters, mixing words, numbers or symbols.";return}
+    if(p!==$("#sp2").value){er.textContent="The passwords don't match.";return}
+    const b=$("#sf button");b.disabled=true;b.textContent="Connecting…";
+    try{await api(c,tok,"");const a=await seal(c,u,p,tok);if(!ls.set(STORE,JSON.stringify(a))){er.textContent="This browser blocked local storage. Allow site data for this page and try again.";b.disabled=false;b.textContent="Connect this device";return}
+      cfg=a;token=tok;adminUser=u;authed=true;startSession();
+      const cf=await getFile(c,tok,"content.json");if(!cf){contentSha=await putFile(c,tok,"content.json",b64Text(JSON.stringify(saved,null,2)),"Add payment page settings")}
+      toast("This device is connected");renderAdmin()}
+    catch(x){er.textContent=ghErr(x);b.disabled=false;b.textContent="Connect this device"}}}
+function renderLogin(){
+  gate(`<h1>Sign in</h1><p class="sub">Enter the username and password you set on this device.</p>
+    <form id="lf" class="list"><div class="f"><label for="lu">Username</label><input class="in" id="lu" required autocomplete="username"></div>
+    <div class="f"><label for="lp">Password</label><input class="in" id="lp" type="password" required autocomplete="current-password"></div>
+    <p class="aerr" id="lerr"></p><button class="abtn pri" type="submit">Sign in</button></form>
+    <button class="abtn ghost sm" id="forget" type="button" style="align-self:flex-start">Forgot password? Reset this device</button>`);
+  $("#lu").focus();let fails=0;
+  $("#lf").onsubmit=async e=>{e.preventDefault();const b=$("#lf button");b.disabled=true;b.textContent="Checking…";
+    let ok=null;try{ok=await unseal(cfg,$("#lp").value)}catch(x){ok=null}
+    if(ok&&ok.username===$("#lu").value.trim()){token=ok.token;adminUser=ok.username;authed=true;startSession();renderAdmin()}
+    else{fails++;const wait=Math.min(30,2**fails);$("#lerr").textContent=`That username and password don't match. Try again in ${wait} seconds.`;setTimeout(()=>{b.disabled=false;b.textContent="Sign in"},wait*1000)}};
+  $("#forget").onclick=()=>confirmBox("Reset this device?","This removes the encrypted login from this browser. You'll set up again with a GitHub token. Your payment page and settings are not affected.","Reset",()=>{ls.del(STORE);cfg=null;renderAdmin()})}
+
+/* ============================================================
+   ADMIN: schema
+   ============================================================ */
+const CATS=[["Design",[["theme","Brand & theme","◐"]]],["Page",[["header","Header & intro","★"],["packages","Packages","▤"],["custom","Custom amount","₹"],["info","Steps & contact","☰"],["policies","Policies & footer","§"]]],["Payments",[["methods","Payment methods","⇄"]]],["Settings",[["account","Account & security","⚿"],["data","Backup & reset","⇅"]]]];
+const SCHEMA={
+  theme:{desc:"Colours, fonts, corners and logo.",cards:[
+    {title:"Quick presets",fields:[{t:"presets"}]},
+    {title:"Colours",fields:[{t:"g3",fields:[{t:"color",path:"theme.bg",label:"Background"},{t:"color",path:"theme.surface",label:"Cards"},{t:"color",path:"theme.text",label:"Text"},{t:"color",path:"theme.soft",label:"Secondary text"},{t:"color",path:"theme.line",label:"Borders"},{t:"color",path:"theme.accent",label:"Accent & buttons"},{t:"color",path:"theme.ok",label:"Secure badge"}]}]},
+    {title:"Typography & shape",fields:[{t:"g2",fields:[{t:"select",path:"theme.fontDisplay",label:"Headings font",options:Object.keys(FONTS_D)},{t:"select",path:"theme.fontBody",label:"Body font",options:Object.keys(FONTS_B)}]},{t:"range",path:"theme.radius",label:"Corner radius",min:0,max:32,step:1,unit:"px"}]},
+    {title:"Brand",fields:[{t:"g2",fields:[{t:"text",path:"brand.name",label:"Name"},{t:"text",path:"brand.tagline",label:"Line under the name"},{t:"text",path:"brand.secureLabel",label:"Secure badge text"},{t:"text",path:"brand.pageTitle",label:"Browser tab title"}]},{t:"image",path:"brand.logo",label:"Logo (square works best)"}]}]},
+  header:{desc:"The first thing payers read.",cards:[{title:"Intro",fields:[{t:"text",path:"hero.eyebrow",label:"Small label"},{t:"text",path:"hero.title",label:"Headline"},{t:"textarea",path:"hero.lead",label:"Intro text"}]}]},
+  packages:{desc:"Priced services, each with its own pay button. Razorpay and Stripe need a payment link per package, created in their dashboards for that exact price.",cards:[
+    {title:"Labels",fields:[{t:"g3",fields:[{t:"text",path:"packages.title",label:"Section title"},{t:"text",path:"packages.popularLabel",label:"Highlight ribbon"},{t:"text",path:"packages.payLabel",label:"Button text"}]}]},
+    {title:"Packages",fields:[{t:"list",path:"packages.items",add:{title:"New package",price:1000,currency:"INR",unit:"",description:"",features:[],highlight:false,image:null,razorpayLink:"",stripeLink:""},title:it=>`${it.title} · ${money(it.price,it.currency)}`,
+      item:[{t:"text",path:"title",label:"Name"},{t:"g3",fields:[{t:"number",path:"price",label:"Price"},{t:"select",path:"currency",label:"Currency",options:CURRENCIES},{t:"text",path:"unit",label:"Unit (optional)",ph:"per hour"}]},
+        {t:"textarea",path:"description",label:"Description"},{t:"strings",path:"features",label:"What's included",addLabel:"Add item"},{t:"toggle",path:"highlight",label:"Highlight as popular"},{t:"image",path:"image",label:"Image (optional)"},
+        {t:"link",path:"razorpayLink",kind:"razorpay",label:"Razorpay payment link for this price"},{t:"link",path:"stripeLink",kind:"stripe",label:"Stripe payment link for this price"}]}]}]},
+  custom:{desc:"Lets payers type any amount. UPI and PayPal fill in the amount automatically; on Razorpay and Stripe the payer types it.",cards:[
+    {title:"Custom amount",fields:[{t:"toggle",path:"custom.enabled",label:"Show the custom amount box"},{t:"g2",fields:[{t:"text",path:"custom.title",label:"Title"},{t:"text",path:"custom.buttonLabel",label:"Button text"}]},{t:"textarea",path:"custom.text",label:"Text"},
+      {t:"g2",fields:[{t:"select",path:"custom.currency",label:"Default currency",options:CURRENCIES},{t:"number",path:"custom.min",label:"Minimum amount"}]},{t:"strings",path:"custom.suggestions",label:"Quick amounts",addLabel:"Add amount",number:true},{t:"text",path:"custom.notePlaceholder",label:"Note box hint"}]}]},
+  methods:{desc:"Turn each payment method on and add its details. A method only appears once its details are valid.",cards:[
+    {title:"UPI",fields:[{t:"toggle",path:"methods.upi.enabled",label:"Accept UPI (INR only)"},{t:"g2",fields:[{t:"vpa",path:"methods.upi.vpa",label:"UPI ID"},{t:"text",path:"methods.upi.payeeName",label:"Payee name (as your bank shows it)"}]},{t:"text",path:"methods.upi.label",label:"Label on the page"},{t:"note",text:"The page builds a UPI QR code and an “Open in UPI app” button with the amount filled in. Payers' apps show your bank-verified name, so keep the payee name matching it."}]},
+    {title:"Razorpay",fields:[{t:"toggle",path:"methods.razorpay.enabled",label:"Accept Razorpay"},{t:"text",path:"methods.razorpay.label",label:"Label on the page"},{t:"link",path:"methods.razorpay.customLink",kind:"razorpay",label:"Payment page for custom amounts"},{t:"note",text:"In Razorpay, create a Payment Page or Payment Link where the customer enters the amount, and paste its link here. Package prices use the link set on each package."}]},
+    {title:"Stripe",fields:[{t:"toggle",path:"methods.stripe.enabled",label:"Accept Stripe"},{t:"text",path:"methods.stripe.label",label:"Label on the page"},{t:"link",path:"methods.stripe.customLink",kind:"stripe",label:"Payment link for custom amounts"},{t:"note",text:"In Stripe, create a Payment Link with “let customers choose what to pay” for custom amounts. Each package uses its own fixed-price link."}]},
+    {title:"PayPal",fields:[{t:"toggle",path:"methods.paypal.enabled",label:"Accept PayPal"},{t:"g2",fields:[{t:"pp",path:"methods.paypal.username",label:"PayPal.me username"},{t:"text",path:"methods.paypal.label",label:"Label on the page"}]}]}]},
+  info:{desc:"Steps for payers and how to reach you after paying.",cards:[
+    {title:"How it works",fields:[{t:"text",path:"steps.title",label:"Title"},{t:"list",path:"steps.items",add:{title:"Step",text:""},max:5,title:it=>it.title,item:[{t:"text",path:"title",label:"Step"},{t:"text",path:"text",label:"Text"}]}]},
+    {title:"After paying",fields:[{t:"text",path:"after.title",label:"Title"},{t:"textarea",path:"after.text",label:"Instructions"},{t:"g2",fields:[{t:"text",path:"after.email",label:"Email"},{t:"text",path:"after.whatsapp",label:"WhatsApp number"}]}]}]},
+  policies:{desc:"Refund policy, terms and the footer line. Payment providers often require a refund policy.",cards:[
+    {title:"Policies",fields:[{t:"list",path:"policies.items",add:{title:"New policy",text:""},title:it=>it.title,item:[{t:"text",path:"title",label:"Title"},{t:"textarea",path:"text",label:"Text",rows:5}]}]},
+    {title:"Footer",fields:[{t:"textarea",path:"footer.text",label:"Footer text"}]}]}
+};
+
+/* ============================================================
+   ADMIN: panel
+   ============================================================ */
+const openItems=new Set();
+function markDirty(){dirty=true;updStatus()}
+function updStatus(){const s=$("#st");if(!s)return;s.className="st"+(dirty?" dirty":"");s.innerHTML=`<i></i>${dirty?"Unsaved changes":"All changes saved"}`;const b=$("#saveB");if(b)b.disabled=!dirty||saving}
+function renderPanel(){
+  admin.innerHTML=`<div class="shell"><aside class="sidebar">${GB}${CATS.map(([g,cs])=>`<div class="grp">${g}</div>${cs.map(([id,l,ic])=>`<button class="nav-b${id===currentCat?" on":""}" data-cat="${id}" type="button"><span class="ico">${ic}</span>${l}</button>`).join("")}`).join("")}</aside>
+    <div class="mainp"><div class="topbar"><div style="min-width:0"><h2 id="catT"></h2><span class="st" id="st"></span></div>
+    <div class="acts"><a class="abtn ghost" href="#">View page</a><button class="abtn" id="pvB" type="button">Preview</button><button class="abtn" id="discB" type="button">Discard</button><button class="abtn pri" id="saveB" type="button">Save &amp; publish</button></div></div>
+    <div class="content" id="cnt"></div></div></div>`;
+  $$(".nav-b",admin).forEach(b=>b.onclick=()=>{currentCat=b.dataset.cat;renderPanel();scrollTo(0,0)});
+  $("#pvB").onclick=()=>{preview=true;route();scrollTo(0,0)};$("#saveB").onclick=save;
+  $("#discB").onclick=()=>{if(!dirty){toast("Nothing to discard");return}confirmBox("Discard unsaved changes?","Your edits since the last save will be lost.","Discard",()=>{draft=clone(saved);dirty=false;renderPanel()})};
+  $("#catT").textContent=CATS.flatMap(g=>g[1]).find(c=>c[0]===currentCat)[1];updStatus();
+  const cnt=$("#cnt");if(currentCat==="account")return renderAccount(cnt);if(currentCat==="data")return renderData(cnt);
+  const sc=SCHEMA[currentCat];cnt.innerHTML=`<p class="desc">${esc(sc.desc)}</p>`;
+  if(currentCat==="methods"){const live=methodChips(draft);cnt.insertAdjacentHTML("beforeend",`<div class="note${live.length?"":" warn2"}"><b>${live.length?"Live on the page: "+esc(live.join(", ")):"No payment method is live yet."}</b> ${live.length?"":"Turn one on below and fill in its details."}</div>`)}
+  for(const card of sc.cards){const el=document.createElement("div");el.className="card-a";el.innerHTML=`<h3>${esc(card.title)}</h3>`;card.fields.forEach(f=>el.appendChild(field(f,draft)));cnt.appendChild(el)}
+}
+function renderKeep(){const y=scrollY;renderPanel();scrollTo(0,y)}
+async function save(){
+  if(!dirty||saving)return;saving=true;updStatus();const b=$("#saveB");if(b)b.textContent="Saving…";
+  try{contentSha=await putFile(cfg,token,"content.json",b64Text(JSON.stringify(draft,null,2)),"Update payment page settings",contentSha);saved=clone(draft);dirty=false;toast("Saved to GitHub. The page updates in about a minute")}
+  catch(e){if(e.status===409||e.status===422){try{const f=await getFile(cfg,token,"content.json");contentSha=f&&f.sha;toast("Settings changed on GitHub since you loaded them. Press Save again to replace them")}catch(_){toast("Couldn't save: "+ghErr(e))}}else toast("Couldn't save: "+ghErr(e))}
+  saving=false;if(b)b.textContent="Save & publish";updStatus()}
+function confirmBox(title,body,okLabel,onOk){const m=document.createElement("div");m.className="modal";
+  m.innerHTML=`<div class="box" role="dialog" aria-modal="true"><h3 style="font-size:18px;margin:0">${esc(title)}</h3><p style="color:var(--a-soft);font-size:14px">${esc(body)}</p><div class="row"><button class="abtn" type="button" data-x>Cancel</button><button class="abtn pri" type="button" data-ok>${esc(okLabel)}</button></div></div>`;
+  document.body.appendChild(m);m.querySelector("[data-x]").onclick=()=>m.remove();m.onclick=e=>{if(e.target===m)m.remove()};m.querySelector("[data-ok]").onclick=()=>{m.remove();onOk()};m.querySelector("[data-ok]").focus()}
+
+let fid=0;
+function el(h){const d=document.createElement("div");d.innerHTML=h.trim();return d.firstElementChild}
+function field(f,obj){
+  const id="f"+(++fid),val=f.path?getP(obj,f.path):null,set=v=>{setP(obj,f.path,v);markDirty()};
+  switch(f.t){
+    case "g2":case "g3":{const g=el(`<div class="${f.t}"></div>`);f.fields.forEach(x=>g.appendChild(field(x,obj)));return g}
+    case "text":case "number":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><input class="in" id="${id}" type="${f.t==="number"?"number":"text"}"${f.t==="number"?' min="0" step="any"':""} placeholder="${esc(f.ph||"")}"></div>`);
+      const i=w.querySelector("input");i.value=val??"";i.oninput=()=>set(f.t==="number"?(+i.value||0):i.value);return w}
+    case "textarea":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><textarea class="ta" id="${id}" rows="${f.rows||3}"></textarea></div>`);const i=w.querySelector("textarea");i.value=val??"";i.oninput=()=>set(i.value);return w}
+    case "select":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><select class="sel" id="${id}">${f.options.map(o=>`<option>${esc(o)}</option>`).join("")}</select></div>`);const i=w.querySelector("select");i.value=val;i.onchange=()=>set(i.value);return w}
+    case "toggle":{const w=el(`<label class="tog" for="${id}"><span>${esc(f.label)}</span><input type="checkbox" id="${id}"></label>`);const i=w.querySelector("input");i.checked=!!val;i.onchange=()=>{set(i.checked);if(currentCat==="methods")renderKeep()};return w}
+    case "range":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><div class="rangef"><input type="range" id="${id}" min="${f.min}" max="${f.max}" step="${f.step}"><output>${val}${f.unit||""}</output></div></div>`);const i=w.querySelector("input"),o=w.querySelector("output");i.value=val;i.oninput=()=>{set(+i.value);o.textContent=i.value+(f.unit||"")};return w}
+    case "color":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><div class="colorf"><input type="color" aria-label="${esc(f.label)} picker"><input class="in" id="${id}" maxlength="7" spellcheck="false"></div></div>`);
+      const[p,t]=w.querySelectorAll("input");p.value=val;t.value=val;p.oninput=()=>{t.value=p.value;set(p.value)};t.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(t.value)){p.value=t.value;set(t.value)}};return w}
+    case "note":return el(`<p class="hint" style="font-size:13px">${esc(f.text)}</p>`);
+    case "vpa":case "pp":case "link":{const w=el(`<div class="f"><label for="${id}">${esc(f.label)}</label><input class="in" id="${id}" spellcheck="false" autocomplete="off" placeholder="${f.t==="vpa"?"name@bank":f.t==="pp"?"yourname":"https://…"}"><span class="fieldwarn"></span></div>`);
+      const i=w.querySelector("input"),wn=w.querySelector(".fieldwarn");i.value=val??"";
+      const check=()=>{const v=i.value.trim();let m="";if(v){if(f.t==="vpa"&&!vpaOk(v))m="This doesn't look like a UPI ID (name@bank).";if(f.t==="pp"&&!ppOk(v))m="Use just the PayPal.me username: letters and numbers only.";
+        if(f.t==="link"){if(!httpsOnly(v))m="Use a full https:// link.";else if(!hostOk(f.kind,v))m=`This isn't a ${f.kind==="razorpay"?"razorpay.com or rzp.io":"stripe.com"} address. Check the link before saving.`}}wn.textContent=m};
+      i.oninput=()=>{set(i.value.trim());check()};check();return w}
+    case "image":return imageField(f,obj,id);
+    case "strings":return stringsField(f,obj);
+    case "list":return listField(f,obj);
+    case "presets":{const w=el(`<div class="presets">${PRESETS.map((p,i)=>`<button class="preset" type="button" data-i="${i}"><span class="bar">${["bg","surface","accent","ok","text"].map(k=>`<i style="background:${p.t[k]}"></i>`).join("")}</span>${esc(p.name)}</button>`).join("")}</div>`);
+      w.querySelectorAll(".preset").forEach(b=>b.onclick=()=>{Object.assign(draft.theme,PRESETS[+b.dataset.i].t);markDirty();renderKeep();toast(PRESETS[+b.dataset.i].name+" applied")});return w}
+  }
+  return el("<div></div>")}
+function imageField(f,obj,id){const val=getP(obj,f.path);
+  const w=el(`<div class="f"><span class="lb">${esc(f.label)}</span><div class="imgf"><div class="thumb">${val?`<img src="${esc(imgUrl(val))}" alt="">`:"No image"}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><label class="abtn sm" for="${id}" style="cursor:pointer">${val?"Replace":"Upload"} image</label><input type="file" id="${id}" accept="image/png,image/jpeg,image/webp" hidden>${val?'<button class="abtn sm danger" type="button" data-rm>Remove</button>':""}</div></div><span class="hint">JPG, PNG or WebP, up to 5 MB. Saved to assets/uploads in this repository.</span></div>`);
+  const inp=w.querySelector("input");
+  inp.onchange=async()=>{const file=inp.files[0];if(!file)return;if(file.size>5*1024*1024){toast("That image is over 5 MB. Choose a smaller one.");return}if(!/^image\/(png|jpeg|webp)$/.test(file.type)){toast("Use a JPG, PNG or WebP image.");return}
+    const lb=w.querySelector("label.abtn");lb.textContent="Uploading…";
+    try{const b64=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(String(fr.result).split(",")[1]);fr.onerror=rej;fr.readAsDataURL(file)});
+      const name=file.name.toLowerCase().replace(/[^a-z0-9.\-]+/g,"-").slice(-60),path=`assets/uploads/${Date.now()}-${name}`;
+      await putFile(cfg,token,path,b64,"Upload image "+name);localPreview[path]=URL.createObjectURL(file);setP(obj,f.path,{path});markDirty();renderKeep();toast("Image uploaded. Save to use it")}
+    catch(e){lb.textContent=(val?"Replace":"Upload")+" image";toast("Upload failed: "+ghErr(e))}};
+  const rm=w.querySelector("[data-rm]");if(rm)rm.onclick=()=>{setP(obj,f.path,null);markDirty();renderKeep()};return w}
+function stringsField(f,obj){const arr=getP(obj,f.path)||[];
+  const w=el(`<div class="f"><span class="lb">${esc(f.label)}</span><div class="strs"></div><button class="abtn sm" type="button" style="align-self:flex-start">+ ${esc(f.addLabel||"Add")}</button></div>`);const box=w.querySelector(".strs");
+  arr.forEach((s,i)=>{const r=el(`<div class="r"><input class="in" ${f.number?'type="number" min="0" step="any"':""} aria-label="${esc(f.label)} ${i+1}"><button class="ib" type="button" aria-label="Move up" ${i?"":"disabled"}>↑</button><button class="ib del" type="button" aria-label="Remove">✕</button></div>`);
+    const inp=r.querySelector("input");inp.value=s;inp.oninput=()=>{arr[i]=f.number?(+inp.value||0):inp.value;markDirty()};
+    const[up,del]=r.querySelectorAll("button");up.onclick=()=>{[arr[i-1],arr[i]]=[arr[i],arr[i-1]];markDirty();renderKeep()};del.onclick=()=>{arr.splice(i,1);markDirty();renderKeep()};box.appendChild(r)});
+  w.querySelector(".abtn").onclick=()=>{arr.push(f.number?0:"");setP(obj,f.path,arr);markDirty();renderKeep()};return w}
+function listField(f,obj){const arr=getP(obj,f.path)||[],path=f.path;
+  const w=el(`<div class="f"><div class="list"></div>${(f.max&&arr.length>=f.max)?"":`<button class="abtn sm" type="button" data-add style="align-self:flex-start">+ Add</button>`}</div>`);const box=w.querySelector(".list");
+  if(!arr.length)box.innerHTML=`<p class="hint">Nothing here yet.</p>`;
+  arr.forEach((it,i)=>{const key=path+"#"+i;const li=el(`<div class="li${openItems.has(key)?" open":""}"><div class="li-h"><span class="chev">›</span><button class="ttl" type="button"></button><button class="ib" type="button" aria-label="Move up" ${i?"":"disabled"}>↑</button><button class="ib" type="button" aria-label="Move down" ${i<arr.length-1?"":"disabled"}>↓</button><button class="ib del" type="button" aria-label="Delete">✕</button></div><div class="li-b"></div></div>`);
+    const ttl=li.querySelector(".ttl");ttl.textContent=f.title(it,i)||"Untitled";ttl.onclick=()=>{li.classList.toggle("open");li.classList.contains("open")?openItems.add(key):openItems.delete(key)};
+    const bs=li.querySelectorAll(".li-h .ib");bs[0].onclick=()=>{[arr[i-1],arr[i]]=[arr[i],arr[i-1]];openItems.clear();markDirty();renderKeep()};bs[1].onclick=()=>{[arr[i+1],arr[i]]=[arr[i],arr[i+1]];openItems.clear();markDirty();renderKeep()};
+    bs[2].onclick=()=>confirmBox("Delete this item?",`“${f.title(it,i)}” will be removed when you save.`,"Delete",()=>{arr.splice(i,1);openItems.clear();markDirty();renderKeep()});
+    const body=li.querySelector(".li-b");f.item.forEach(sf=>body.appendChild(field(sf,it)));body.addEventListener("input",()=>ttl.textContent=f.title(it,i)||"Untitled");box.appendChild(li)});
+  const add=w.querySelector("[data-add]");if(add)add.onclick=()=>{arr.push(clone(f.add));setP(obj,f.path,arr);openItems.add(path+"#"+(arr.length-1));markDirty();renderKeep()};return w}
+
+function renderAccount(cnt){
+  cnt.innerHTML=`<p class="desc">Your login lives only on this device, encrypted with your password. Change it here, or replace the GitHub token when it expires.</p>
+  <div class="card-a"><h3>Login on this device</h3><form id="af" class="list" autocomplete="off">
+    <div class="f"><label for="au">Username</label><input class="in" id="au" required minlength="3" autocomplete="username"></div>
+    <div class="g2"><div class="f"><label for="ap">New password</label><input class="in" id="ap" type="password" autocomplete="new-password"><div class="meter"><i id="amb"></i></div><span class="hint" id="aml">Leave empty to keep the current one.</span></div>
+    <div class="f"><label for="ap2">Confirm new password</label><input class="in" id="ap2" type="password" autocomplete="new-password"></div></div>
+    <div class="f"><label for="at">New GitHub token</label><input class="in" id="at" type="password" autocomplete="off" spellcheck="false"><span class="hint">Only when your token expires or you rotate it.</span></div>
+    <div class="f"><label for="ac">Current password</label><input class="in" id="ac" type="password" required autocomplete="current-password"></div>
+    <p class="aerr" id="aerr"></p><button class="abtn pri" type="submit" style="align-self:flex-start">Update login</button></form></div>
+  <div class="card-a"><h3>Repository</h3><p style="font-size:14px">Connected to <b>${esc(cfg.owner)}/${esc(cfg.repo)}</b>, branch <b>${esc(cfg.branch)}</b>.</p><a class="abtn sm" style="align-self:flex-start" href="https://github.com/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/commits" target="_blank" rel="noopener">See change history on GitHub ↗</a></div>
+  <div class="card-a"><h3>Session</h3><p style="color:var(--a-soft);font-size:14px">You're signed out automatically after 30 minutes without activity.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="abtn" id="outB" type="button">Sign out</button><button class="abtn danger" id="forgetB" type="button">Remove login from this device</button></div></div>
+  <div class="note"><b>Keep payments safe.</b> Anyone with this token could change where payments go. Use a token for this repository only, keep two-factor login on for GitHub, and check the change history if a payer reports anything odd.</div>`;
+  $("#au").value=adminUser||"";const ap=$("#ap");ap.addEventListener("input",()=>{if(!ap.value){$("#amb").style.width="0";$("#aml").textContent="Leave empty to keep the current one."}});ap.addEventListener("input",()=>{if(ap.value){const s=pwScore(ap.value);$("#amb").style.width=[8,30,55,80,100][s]+"%";$("#amb").style.background=["#F06A6A","#F06A6A","#F2A541","#3FB97A","#3FB97A"][s];$("#aml").textContent=["Too weak","Weak","Fair","Strong","Very strong"][s]}});
+  $("#outB").onclick=()=>{signOut();location.hash=""};
+  $("#forgetB").onclick=()=>confirmBox("Remove login from this device?","You'll need your GitHub token to set this device up again. The payment page is not affected.","Remove",()=>{ls.del(STORE);cfg=null;signOut();location.hash=""});
+  $("#af").onsubmit=async e=>{e.preventDefault();const er=$("#aerr"),u=$("#au").value.trim(),p=$("#ap").value,nt=$("#at").value.trim(),cur=$("#ac").value;er.textContent="";
+    if(u.length<3){er.textContent="Username needs at least 3 characters.";return}
+    if(p&&(p.length<12||pwScore(p)<3)){er.textContent="Choose a stronger password: at least 12 characters, mixing words, numbers or symbols.";return}
+    if(p!==$("#ap2").value){er.textContent="The new passwords don't match.";return}
+    const b=$("#af button");b.disabled=true;b.textContent="Updating…";let ok=null;try{ok=await unseal(cfg,cur)}catch(x){ok=null}
+    if(!ok){er.textContent="Current password is incorrect.";b.disabled=false;b.textContent="Update login";return}
+    try{const tok=nt||ok.token;if(nt)await api(cfg,nt,"");const a=await seal(cfg,u,p||cur,tok);ls.set(STORE,JSON.stringify(a));cfg=a;token=tok;adminUser=u;startSession();toast("Login updated on this device");renderAccount(cnt)}
+    catch(x){er.textContent=ghErr(x);b.disabled=false;b.textContent="Update login"}}}
+function renderData(cnt){
+  cnt.innerHTML=`<p class="desc">Copy all settings as a backup, restore one, or reset to the starting settings.</p>
+  <div class="card-a"><h3>Back up</h3><button class="abtn" id="cpB" type="button" style="align-self:flex-start">Copy settings as JSON</button></div>
+  <div class="card-a"><h3>Restore</h3><div class="f"><label for="imp">Paste a backup</label><textarea class="ta" id="imp" rows="6" spellcheck="false" style="font-family:'JetBrains Mono',monospace;font-size:12px"></textarea></div><p class="aerr" id="ierr"></p><button class="abtn" id="impB" type="button" style="align-self:flex-start">Load backup into editor</button></div>
+  <div class="card-a"><h3>Reset</h3><p style="color:var(--a-soft);font-size:14px">Puts the editor back to the starting settings, with every payment method switched off. Nothing changes on the page until you save.</p><button class="abtn danger" id="rsB" type="button" style="align-self:flex-start">Reset settings</button></div>`;
+  $("#cpB").onclick=()=>{const tx=JSON.stringify(draft,null,2);try{navigator.clipboard.writeText(tx).then(()=>toast("Backup copied"),()=>{$("#imp").value=tx;$("#imp").select()})}catch(e){$("#imp").value=tx;$("#imp").select()}};
+  $("#impB").onclick=()=>{try{const v=JSON.parse($("#imp").value);if(!v||!v.theme||!v.methods)throw 0;draft=merge(DEFAULT,v);markDirty();toast("Backup loaded. Check Payment methods, then save");$("#ierr").textContent=""}catch(e){$("#ierr").textContent="That isn't a valid backup of this payment page."}};
+  $("#rsB").onclick=()=>confirmBox("Reset all settings?","The editor goes back to the starting settings. You can still discard before saving.","Reset",()=>{draft=clone(DEFAULT);markDirty();toast("Reset in editor. Save to publish")})}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+try{const a=JSON.parse(ls.get(STORE)||"null");if(a&&a.data&&a.salt)cfg=a}catch(e){}
+restoreSession();
+route();
+(async()=>{try{const r=await fetch("content.json",{cache:"no-store"});if(r.ok){saved=merge(DEFAULT,await r.json());if(!dirty)draft=clone(saved);if(location.hash!=="#admin"&&!preview)renderSite(saved)}}catch(e){}})();
+})();
+</script>
+</body>
+</html>

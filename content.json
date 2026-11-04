@@ -1,0 +1,108 @@
+{
+  "theme": {
+    "bg": "#F3F5F9",
+    "surface": "#FFFFFF",
+    "text": "#0F172A",
+    "soft": "#5B6577",
+    "line": "#DCE2EC",
+    "accent": "#1F5EFF",
+    "ok": "#0F9D74",
+    "fontDisplay": "Bricolage Grotesque",
+    "fontBody": "Instrument Sans",
+    "radius": 18
+  },
+  "brand": {
+    "name": "Prakash Lal",
+    "tagline": "Payments",
+    "logo": null,
+    "secureLabel": "Secure payment",
+    "pageTitle": "Pay Prakash Lal"
+  },
+  "hero": {
+    "eyebrow": "Payments",
+    "title": "Pay for a service or send any amount",
+    "lead": "Choose a package or enter an amount, then pay with UPI, card or PayPal. You'll see who you're paying before you confirm."
+  },
+  "packages": {
+    "title": "Packages",
+    "popularLabel": "Popular",
+    "payLabel": "Pay now",
+    "items": []
+  },
+  "custom": {
+    "enabled": true,
+    "title": "Pay a custom amount",
+    "text": "For invoices, deposits or anything else agreed with me.",
+    "currency": "INR",
+    "min": 1,
+    "suggestions": [
+      500,
+      1000,
+      2500,
+      5000
+    ],
+    "notePlaceholder": "What is this payment for? (e.g. invoice number)",
+    "buttonLabel": "Continue"
+  },
+  "methods": {
+    "upi": {
+      "enabled": false,
+      "label": "UPI",
+      "vpa": "",
+      "payeeName": "Prakash Lal"
+    },
+    "razorpay": {
+      "enabled": false,
+      "label": "Card, UPI or netbanking (Razorpay)",
+      "customLink": ""
+    },
+    "stripe": {
+      "enabled": false,
+      "label": "International card (Stripe)",
+      "customLink": ""
+    },
+    "paypal": {
+      "enabled": false,
+      "label": "PayPal",
+      "username": ""
+    }
+  },
+  "steps": {
+    "title": "How it works",
+    "items": [
+      {
+        "title": "Choose",
+        "text": "Pick a package or enter an amount."
+      },
+      {
+        "title": "Pay",
+        "text": "Use UPI, a card or PayPal. Check the payee name before you confirm."
+      },
+      {
+        "title": "Share the reference",
+        "text": "Send me the payment reference so I can match it to your order."
+      }
+    ]
+  },
+  "after": {
+    "title": "After you pay",
+    "text": "Send the transaction reference or a screenshot so I can confirm your payment.",
+    "email": "",
+    "whatsapp": ""
+  },
+  "policies": {
+    "items": [
+      {
+        "title": "Refund policy",
+        "text": "Refunds are handled case by case. Contact me within 7 days of payment."
+      },
+      {
+        "title": "Terms",
+        "text": "Payments are for services agreed in advance. Prices include applicable taxes unless stated."
+      }
+    ]
+  },
+  "footer": {
+    "text": "Payments are processed by UPI apps, Razorpay, Stripe or PayPal. This page never sees your card or bank details."
+  }
+}
