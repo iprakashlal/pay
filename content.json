@@ -46,7 +46,9 @@
         "currency": "INR",
         "unit": "",
         "description": "",
-        "features": [],
+        "features": [
+          "ghhj"
+        ],
         "highlight": false,
         "image": null,
         "razorpayLink": "",
