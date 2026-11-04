@@ -73,9 +73,9 @@
   },
   "methods": {
     "upi": {
-      "enabled": false,
+      "enabled": true,
       "label": "UPI",
-      "vpa": "",
+      "vpa": "cskv06@oksbi",
       "payeeName": "Prakash Lal"
     },
     "razorpay": {
