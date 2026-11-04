@@ -30,7 +30,7 @@
     "items": [
       {
         "title": "New package",
-        "price": 1000,
+        "price": 1,
         "currency": "INR",
         "unit": "",
         "description": "fgy",
